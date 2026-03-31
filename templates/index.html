@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Forca</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Jogo da Forca</h1>
+        <p class="message">{{ mensagem }}</p>
+
+        <div class="game-info">
+            <p>Vidas restantes: <span class="lives">{{ vidas }}</span></p>
+            <p>Letras tentadas: <span class="tried-letters">{{ ', '.join(letras_tentadas) }}</span></p>
+            <p>Erros: <span class="errors">{{ erros }}</span></p>
+        </div>
+        <div class="forca-imagem">
+            {% if vidas < 10 and not jogo_terminado %}
+                <img src="{{ url_for('static', filename='img/forca' + (10 - vidas)|string + '.png') }}" alt="Imagem da Forca - Erros: {{ erros }}">
+            {% elif vidas >= 10 %}
+                <img src="{{ url_for('static', filename='img/forca0.png') }}" alt="Forca Vazia">
+            {% else %}
+                <img src="{{ url_for('static', filename='img/forca10.png') }}" alt="Fim de Jogo - Personagem Enforcado">
+            {% endif %}
+        </div>
+        <div class="word-display">
+            {% for char in gabarito %}
+                <span class="letter">{{ char }}</span>
+            {% endfor %}
+        </div>
+
+        {% if not jogo_terminado %}
+            <form action="{{ url_for('jogar') }}" method="post" class="guess-form">
+                <label for="letra">Informe uma letra:</label>
+                <input type="text" id="letra" name="letra" maxlength="1" pattern="[a-zA-Z]" required>
+                <button type="submit">Tentar</button>
+            </form>
+        {% else %}
+            <div class="game-over-message">
+                <p>A palavra era: <strong>{{ palavra_final }}</strong></p>
+                <a href="{{ url_for('reiniciar') }}" class="button restart-button">Jogar Novamente</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
