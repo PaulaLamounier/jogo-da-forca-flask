@@ -2,7 +2,7 @@ import random
 from flask import Flask, render_template, request, session, redirect, url_for
 
 app = Flask(__name__)
-app.secret_key = 'uma_chave_secreta_muito_segura' # Necessário para usar sessões
+app.secret_key = 'dev' # Necessário para usar sessões
 
 # Lista de palavras (pode ser movida para um arquivo separado, se preferir)
 LISTA_PALAVRAS = ['Casa', 'Sol', 'Livro', 'Rua', 'Flor', 'Tatu', 'Caju', 'Lobo', 'Pai', 'Celular']
@@ -72,3 +72,6 @@ def reiniciar():
 
 if __name__ == '__main__':
     app.run(debug=True) # debug=True para desenvolvimento, desative em produção
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
